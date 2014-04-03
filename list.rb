@@ -17,6 +17,7 @@
 # after the previous methods are implemented:
 
 # reverse, max, min, reduce, each, flatten
+require './node.rb'
 class List
 
   def initialize
@@ -27,18 +28,48 @@ class List
 
   # Adds a new value to the end of the list.
   def push(value)
+    if @head.nil?
+      @head = Node.new(value)
+      @tail = @head
+    else
+      old_tail = @tail
+      @tail = Node.new(value)
+      old_tail.next = @tail
+      @tail.previous = old_tail
+    end
+    @length += 1
+  end
+
+  def length
+    @length
   end
 
   # Returns the value that is popped off
   # or nil if none exists
   def pop
+    if @length == 0
+      return nil
+    elsif @length == 1
+      last_tail = @tail
+      @tail = nil
+      @head = nil
+      @length = 0
+      return last_tail.value
+    else     
+      last_tail = @tail
+      @tail = @tail.previous
+      @tail.next = nil
+      @length -= 1
+      last_tail.value
+    end
   end
 
-  def insert(value)
+  def insert(index, value)
   end
 
   # Given an index, returns the value at that index
   def [](index)
+
   end
 
   # Sets a value at the given index.  Returns the value that
